@@ -1,6 +1,21 @@
-const crypto = require('node:crypto');
+const https = require('node:https');
 
-// Beyond the number of CPU cores
+const MAX_CALLS = 6;
+const start = Date.now();
+for (let i = 0; i < MAX_CALLS; i++) {
+  https
+    .request('https://www.google.com', (res) => {
+      res.on('data', () => {});
+      res.on('end', () => {
+        console.log(`Request: ${i + 1}`, Date.now() - start);
+      });
+    })
+    .end();
+}
+
+//const crypto = require('node:crypto');
+
+/* Beyond the number of CPU cores
 process.env.UV_THREADPOOL_SIZE = 16;
 const MAX_CALLS = 16;
 
@@ -10,6 +25,7 @@ for (let i = 0; i < MAX_CALLS; i++) {
     console.log(`Hash: ${i + 1}`, Date.now() - start);
   });
 }
+*/
 
 /* Increase Thread Pool size
 process.env.UV_THREADPOOL_SIZE = 6;
