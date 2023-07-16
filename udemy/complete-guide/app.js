@@ -1,8 +1,13 @@
 const express = require('express');
+const bodyParser = require('body-parser');
 
 const app = express();
 
+const adminRoute = require('./routes/admin');
+const shopRoute = require('./routes/shop');
+
 /* use: Middleware를 실행시키기 위한 메서드
+        모든 http 메서드(GET, POST 등...)에 반응
 
 app.use((req, res, next) => {
   console.log('In the middleware');
@@ -10,21 +15,13 @@ app.use((req, res, next) => {
 });
 */
 
-app.use('/', (req, res, next) => {
-  console.log('This always runs!');
-  next();
-});
+app.use(bodyParser.urlencoded({ extended: false }));
 
-app.use('/add-product', (req, res, next) => {
-  console.log('In the another middleware');
-  res.send('<h1>The "Add Product" Page</h1>');
-  // next()를 호출하지 않았기 때문에 /add-product 경로로 들어오면
-  // '/' 경로에 설정한 미들웨어가 실행되지 않는다.
-});
+app.use('/admin', adminRoute);
+app.use(shopRoute);
 
-app.use('/', (req, res, next) => {
-  console.log('In the another middleware');
-  res.send('<h1>Hello from Express!</h1>');
+app.use((req, res, next) => {
+  res.status(404).send(`<h1>Page not found</h1>`);
 });
 
 app.listen(3000);
