@@ -6,15 +6,7 @@ const expressHbs = require('express-handlebars');
 
 const app = express();
 
-app.engine(
-  'hbs',
-  expressHbs({
-    layoutsDir: 'views/layouts/',
-    defaultLayout: 'main-layout',
-    extname: 'hbs',
-  })
-); // 내장 엔진이 아닌 엔진을 등록
-app.set('view engine', 'hbs');
+app.set('view engine', 'ejs');
 app.set('views', 'views');
 
 const adminData = require('./routes/admin');
