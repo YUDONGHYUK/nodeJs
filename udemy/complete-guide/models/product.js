@@ -47,6 +47,17 @@ module.exports = class Product {
     });
   }
 
+  static deleteById(id) {
+    getProductFromFile((products) => {
+      const updatedProducts = products.filter((pord) => prod.id !== id);
+      fs.writeFile(p, JSON.stringify(updatedProducts), (err) => {
+        if (!err) {
+          // Delete Product in Cart
+        }
+      });
+    });
+  }
+
   static fetchAll(callback) {
     getProductFromFile(callback);
   }
