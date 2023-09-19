@@ -14,14 +14,6 @@ app.set('views', 'views');
 const adminRoutes = require('./routes/admin');
 const shopRoute = require('./routes/shop');
 
-db.execute('SELECT * FROM products')
-  .then((result) => {
-    console.log(result[0], result[1]);
-  })
-  .catch((err) => {
-    console.log(err);
-  });
-
 /* use: Middleware를 실행시키기 위한 메서드
         모든 http 메서드(GET, POST 등...)에 반응
 */
