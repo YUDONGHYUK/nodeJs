@@ -4,15 +4,26 @@ const { rootDir } = require('../utils/path');
 
 const router = express.Router();
 
+const products = [];
+
 // Path: /admin/add-product => GET
 router.get('/add-product', (req, res, next) => {
-  res.sendFile(path.join(rootDir, 'views', 'add-product.html'));
+  // render : 템플릿 엔진을 사용할 때 사용, 등록된 view engine을 찾아 실행한다.
+  res.render('add-product', {
+    pageTitle: 'Add Product',
+    path: '/admin/add-product',
+    formsCSS: true,
+    productCSS: true,
+    activeAddProduct: true,
+  });
+  // res.sendFile(path.join(rootDir, 'views', 'add-product.html'));
 });
 
 // Path: /admin/add-product => POST
 router.post('/add-product', (req, res, next) => {
-  console.log(req.body);
+  products.push({ title: req.body.title });
   res.redirect('/');
 });
 
-module.exports = router;
+exports.routes = router;
+exports.products = products;

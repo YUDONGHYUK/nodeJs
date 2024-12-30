@@ -1,0 +1,10 @@
+{
+  "editor.autoClosingBrackets": "languageDefined",
+  "html.autoClosingTags": true,
+  "javascript.autoClosingTags": true,
+  "typescript.autoClosingTags": true,
+  "eslint.run": "onType",
+  "editor.formatOnPaste": false,
+  "editor.suggestOnTriggerCharacters": true,
+  "editor.autoClosingQuotes": "languageDefined"
+}
