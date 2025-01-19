@@ -6,9 +6,9 @@
         <main class="centered">
             <h1><%= product.title %></h1>
             <hr>
-            <di >
+            <div class="image">
               <img style="width:307px; height:360px" src="<%= product.imageUrl %>" alt="<%= product.title %>" />
-            </di>
+            </div>
             <h2><%= product.price %></h2>
             <p><%= product.description %></p>
             <%- include('../includes/add-to-cart.ejs') %>
