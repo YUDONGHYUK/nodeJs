@@ -1,15 +1,26 @@
 require('dotenv').config();
 
-const { Sequelize } = require('sequelize');
+const mongodb = require('mongodb');
+const MongoClient = mongodb.MongoClient;
 
-const sequelize = new Sequelize(
-  'node-complete',
-  'root',
-  process.env.DB_PASSWORD,
-  {
-    dialect: 'mysql',
-    host: 'localhost',
-  }
-);
+let _db;
 
-module.exports = sequelize;
+const mongoConnect = (cb) => {
+  MongoClient.connect(
+    `mongodb+srv://doyu:${process.env.DB_PASSWORD}@cluster0.sq5zh.mongodb.net/shop?retryWrites=true&w=majority&appName=Cluster0`
+  )
+    .then((client) => {
+      console.log('Connected!!');
+      _db = client.db();
+      cb();
+    })
+    .catch(console.error);
+};
+
+const getDb = () => {
+  if (!_db) throw Error('No database found!');
+  return _db;
+};
+
+exports.mongoConnect = mongoConnect;
+exports.getDb = getDb;
