@@ -1,30 +1,70 @@
-const { DataTypes } = require('sequelize');
+const mongodb = require('mongodb');
+const getDb = require('../utils/database').getDb;
 
-const sequelize = require('../utils/database');
+class Product {
+  constructor(title, price, description, imageUrl, _id) {
+    this.title = title;
+    this.price = price;
+    this.description = description;
+    this.imageUrl = imageUrl;
+    this._id = _id ? new mongodb.ObjectId(_id) : null;
+  }
 
-const Product = sequelize.define('product', {
-  id: {
-    type: DataTypes.INTEGER,
-    autoIncrement: true,
-    allowNull: false,
-    primaryKey: true,
-  },
-  title: {
-    type: DataTypes.STRING,
-    allowNull: false,
-  },
-  price: {
-    type: DataTypes.DOUBLE,
-    allowNull: false,
-  },
-  imageUrl: {
-    type: DataTypes.STRING,
-    allowNull: false,
-  },
-  description: {
-    type: DataTypes.STRING,
-    allowNull: false,
-  },
-});
+  save() {
+    const db = getDb();
+    let dbOperation;
+
+    if (this._id) {
+      dbOperation = db
+        .collection('products')
+        .updateOne({ _id: this._id }, { $set: this });
+    } else {
+      dbOperation = db.collection('products').insertOne(this);
+    }
+
+    return dbOperation
+      .then((result) => {
+        console.log(result);
+      })
+      .catch(console.error);
+  }
+
+  static fetchAll() {
+    const db = getDb();
+    return db
+      .collection('products')
+      .find()
+      .toArray()
+      .then((products) => {
+        console.log(products);
+        return products;
+      })
+      .catch(console.error);
+  }
+
+  static findById(prodId) {
+    const db = getDb();
+    return db
+      .collection('products')
+      .find({ _id: new mongodb.ObjectId(prodId) })
+      .next()
+      .then((product) => {
+        console.log(product);
+        return product;
+      })
+      .catch(console.error);
+  }
+
+  static deleteById(prodId) {
+    const db = getDb();
+    return db
+      .collection('products')
+      .deleteOne({ _id: new mongodb.ObjectId(prodId) })
+      .then(() => {
+        console.log(`DELETED PRODUCT UD: ${prodId}`);
+      })
+      .catch(console.error);
+  }
+}
 
 module.exports = Product;
