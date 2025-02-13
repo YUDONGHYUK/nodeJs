@@ -4,6 +4,7 @@ const bodyParser = require('body-parser');
 
 const errorController = require('./controllers/error');
 const mongoConnect = require('./utils/database').mongoConnect;
+const User = require('./models/user');
 
 const app = express();
 
@@ -16,13 +17,12 @@ const shopRoutes = require('./routes/shop');
 app.use(bodyParser.urlencoded());
 app.use(express.static(path.join(__dirname, 'public'))); // 정적 파일 서비스
 app.use((req, res, next) => {
-  next();
-  // User.findByPk(1)
-  //   .then((user) => {
-  //     req.user = user;
-  //     next();
-  //   })
-  //   .catch((error) => console.error(error));
+  User.findById('67adf41191d0a63ccfeb1f37')
+    .then((user) => {
+      req.user = user;
+      next();
+    })
+    .catch(console.error);
 });
 
 app.use('/admin', adminRoutes);
