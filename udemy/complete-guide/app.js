@@ -17,9 +17,9 @@ const shopRoutes = require('./routes/shop');
 app.use(bodyParser.urlencoded());
 app.use(express.static(path.join(__dirname, 'public'))); // 정적 파일 서비스
 app.use((req, res, next) => {
-  User.findById('67adf41191d0a63ccfeb1f37')
+  User.findById('67c6f23bb4b6819b860e22bc')
     .then((user) => {
-      req.user = user;
+      req.user = new User(user.username, user.email, user.cart, user._id);
       next();
     })
     .catch(console.error);
